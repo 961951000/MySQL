@@ -107,7 +107,7 @@ namespace MySQL
                 sb.Append(className);
                 sb.Append("\r\n\t{\r\n");
                 sb.Append("\t\t#region Model\r\n");
-                var i = 0;
+                var order = 0;
                 foreach (var column in table.Value)
                 {
                     var propertieName = string.Empty;
@@ -137,8 +137,8 @@ namespace MySQL
                     }
                     if (!string.IsNullOrEmpty(column.主键))
                     {
-                        sb.Append("\t\t[Key, Column(\"").Append(column.字段名).Append("\", Order = ").Append(i).Append(")]\r\n");
-                        i++;
+                        sb.Append("\t\t[Key, Column(\"").Append(column.字段名).Append("\", Order = ").Append(order).Append(")]\r\n");
+                        order++;
                     }
                     else
                     {
