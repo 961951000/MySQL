@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using MySQL.Models;
 
 namespace MySQL
 {
@@ -47,27 +48,14 @@ namespace MySQL
         private static int CreateModel(Dictionary<Table, List<Dict>> dict)
         {
             var space = ConfigurationManager.AppSettings["modelnamespace"];
-            var modelsPath = ConfigurationManager.AppSettings["modelpath"];
-            if (!BaseTool.IsValidPath(modelsPath))
+            var modelsPath = ConfigurationManager.AppSettings["path"];
+            if (string.IsNullOrEmpty(space))
             {
-                #region 应用程序路径
-                var appPath = AppDomain.CurrentDomain.BaseDirectory;
-                for (var i = 0; i < 2; i++)
-                {
-                    var sb = new StringBuilder();
-                    var list = appPath.Split('\\').ToList();
-                    list.Remove("");
-                    list.RemoveAt(list.Count - 1);
-                    foreach (var str in list)
-                    {
-                        sb.Append(str).Append("\\");
-                    }
-                    appPath = sb.ToString();
-                }
-                #endregion
-                var arr = appPath.Split('\\');
-                space = $"{arr[arr.Length - 2]}.Models";
-                modelsPath = Path.Combine(@appPath, "Models");
+                space = "Default.Models";
+            }
+            if (string.IsNullOrEmpty(modelsPath) || !BaseTool.IsValidPath(modelsPath))
+            {
+                modelsPath = AppDomain.CurrentDomain.BaseDirectory;
             }
             if (!Directory.Exists(modelsPath))
             {
@@ -293,24 +281,5 @@ namespace MySQL
             }
             return flag;
         }
-    }
-    internal class Table
-    {
-        public string 表名 { get; set; }
-        public string 表说明 { get; set; }
-    }
-    internal class Dict
-    {
-        public long? 字段序号 { get; set; }
-        public string 字段名 { get; set; }
-        public string 标识 { get; set; }
-        public string 主键 { get; set; }
-        public string 数据类型 { get; set; }
-        public long? 占用字节数 { get; set; }
-        public long? 长度 { get; set; }
-        public long? 小数位数 { get; set; }
-        public string 允许空 { get; set; }
-        public string 默认值 { get; set; }
-        public string 字段说明 { get; set; }
     }
 }

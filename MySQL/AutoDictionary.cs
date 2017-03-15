@@ -9,12 +9,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using MySQL.Models;
+using MySQL.Util;
 
 namespace MySQL
 {
     public class AutoDictionary
     {
-        private static string _path = AppDomain.CurrentDomain.BaseDirectory;
+        private static string _path = ConfigurationManager.AppSettings["path"];
         /// <summary>
         /// 程序启动
         /// </summary>
@@ -35,19 +37,11 @@ namespace MySQL
                     dict.Add(table, columns);
                 }
                 #region 设置路径           
-                for (var i = 0; i < 2; i++)
+                if (string.IsNullOrEmpty(_path) || !BaseTool.IsValidPath(_path))
                 {
-                    var sb = new StringBuilder();
-                    var list = _path.Split('\\').ToList();
-                    list.Remove("");
-                    list.RemoveAt(list.Count - 1);
-                    foreach (var str in list)
-                    {
-                        sb.Append(str).Append("\\");
-                    }
-                    _path = sb.ToString();
+                    _path = AppDomain.CurrentDomain.BaseDirectory;
                 }
-                _path += db.Database + ".xlsx";
+                _path = Path.Combine(_path, $"{db.Database}.xlsx");
                 #endregion
                 GeneratedForm(dict);
             }
