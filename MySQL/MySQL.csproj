@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\BaseTool.cs" />
     <Compile Include="Util\Loger.cs" />
+    <Compile Include="Util\RegexTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -55,7 +55,7 @@ namespace MySQL
             }
             if (string.IsNullOrEmpty(modelsPath) || !BaseTool.IsValidPath(modelsPath))
             {
-                modelsPath = AppDomain.CurrentDomain.BaseDirectory;
+                modelsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models");
             }
             if (!Directory.Exists(modelsPath))
             {
@@ -80,6 +80,11 @@ namespace MySQL
                 else
                 {
                     className = table.Key.表名.Substring(0, 1).ToUpper() + table.Key.表名.Substring(1);
+                }
+                var firstLetter = className.Substring(0, 1);
+                if (firstLetter != "_" && !RegexTool.IsLetter(firstLetter))
+                {
+                    className = $"_{className}";
                 }
                 sb.Append("using System;\r\nusing System.ComponentModel.DataAnnotations;\r\nusing System.ComponentModel.DataAnnotations.Schema;\r\n\r\nnamespace ");
                 sb.Append(space);
@@ -116,6 +121,18 @@ namespace MySQL
                     if (propertieName == className)
                     {
                         propertieName = $"_{propertieName}";
+                    }
+                    else
+                    {
+                        firstLetter = propertieName.Substring(0, 1);
+                        if (firstLetter != "_" && !RegexTool.IsLetter(firstLetter))
+                        {
+                            propertieName = $"_{propertieName}";
+                            if (propertieName == className)
+                            {
+                                propertieName = $"_{propertieName}";
+                            }
+                        }
                     }
                     if (!string.IsNullOrEmpty(column.字段说明))
                     {
