@@ -73,13 +73,13 @@ namespace MySQL
                     {
                         if (!string.IsNullOrEmpty(str))
                         {
-                            className += str.Substring(0, 1).ToUpper() + str.Substring(1);
+                            className += str.Substring(0, 1).ToUpper() + str.Substring(1).ToLower();
                         }
                     }
                 }
                 else
                 {
-                    className = table.Key.表名.Substring(0, 1).ToUpper() + table.Key.表名.Substring(1);
+                    className = table.Key.表名.Substring(0, 1).ToUpper() + table.Key.表名.Substring(1).ToLower();
                 }
                 var firstLetter = className.Substring(0, 1);
                 if (firstLetter != "_" && !RegexTool.IsLetter(firstLetter))
@@ -110,13 +110,13 @@ namespace MySQL
                         {
                             if (!string.IsNullOrEmpty(str))
                             {
-                                propertieName += str.Substring(0, 1).ToUpper() + str.Substring(1);
+                                propertieName += str.Substring(0, 1).ToUpper() + str.Substring(1).ToLower();
                             }
                         }
                     }
                     else
                     {
-                        propertieName = column.字段名.Substring(0, 1).ToUpper() + column.字段名.Substring(1);
+                        propertieName = column.字段名.Substring(0, 1).ToUpper() + column.字段名.Substring(1).ToLower();
                     }
                     if (propertieName == className)
                     {
